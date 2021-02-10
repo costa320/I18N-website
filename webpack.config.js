@@ -1,15 +1,22 @@
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
+
 module.exports = {
-  mode: "none",
-  entry: "./src/index.js",
+  mode: "development",
+  entry: { index: path.resolve(__dirname, "src", "index.js") },
   output: {
-    path: __dirname + "/dist",
-    filename: "bundle.js",
+    path: path.resolve(__dirname, "build"),
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, "src", "index.html"),
+    }),
+  ],
   devServer: {
-    contentBase: path.join(__dirname, "dist"),
+    open: {
+      app: ["chrome", "--incognito", "--other-flag"],
+    },
   },
-  devtool: "cheap-module-eval-source-map",
   module: {
     rules: [
       {
@@ -17,14 +24,13 @@ module.exports = {
         use: ["style-loader", "css-loader"],
       },
       {
+        test: /\.scss$/,
+        use: ["style-loader", "css-loader", "sass-loader"],
+      },
+      {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: ["@babel/preset-env"],
-          },
-        },
+        use: ["babel-loader"],
       },
     ],
   },

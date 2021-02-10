@@ -1,3 +1,9 @@
 import "./styles/main.css";
 
-alert("connected!");
+console.log("Hello webpack!");
+
+function fancyFunc() {
+  alert("COSTA");
+}
+
+fancyFunc();
